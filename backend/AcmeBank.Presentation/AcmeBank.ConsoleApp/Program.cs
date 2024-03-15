@@ -33,7 +33,7 @@ class Program
             string inputPassword = Console.ReadLine().Trim();
 
             // Only leave the log in page if BOTH username and password are the same
-            if (inputUsername == name && inputPassword == password || !string.IsNullOrEmpty(inputUsername) || !string.IsNullOrEmpty(inputUsername))
+            if (inputUsername == name && inputPassword == password)
             {
                 inputSuccess = true;
                 Console.WriteLine();

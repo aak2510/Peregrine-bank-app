@@ -8,12 +8,12 @@ class BusinessAccount : Account
     public bool HasChequeBook { get; set; }
 
 
-    public BusinessAccount(string businessName, string businessFirstLine, string businessSecondLine, string businessPostCode,
+    public BusinessAccount(string businessName, string businessFirstLine, string businessSecondLine, string businessPostCode, 
         bool hasChequeBook, string AccountNumber, string SortCode, decimal balance, DateTime OpeningDate) : base(AccountNumber, SortCode, balance, OpeningDate)
     {
         this.BusinessName = businessName;
         this.BusinessFirstLine = businessFirstLine;
-        this.BusinessSecondLine = businessSecondLine;
+        this.BusinessSecondLine = businessSecondLine;   
         this.BusinessPostCode = businessPostCode;
         this.HasChequeBook = hasChequeBook;
 

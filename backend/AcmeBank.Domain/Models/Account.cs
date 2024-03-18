@@ -5,13 +5,13 @@
 
 using System;
 
-public enum AccountType
-{
-    Savings,
-    Checking,
+//public enum AccountType
+//{
+//    Savings,
+//    Checking,
 
-    // Add more account types if needed. 
-}
+//    // Add more account types if needed. 
+//}
 
 public class Account
 {
@@ -32,10 +32,7 @@ public class Account
         SortCode = sortCode;
         Actions = new string[0]; // Initialize actions array.
     }
-}
 
-public class DisplayAccounts
-{
     public void Display(Account account)
     {
         Console.WriteLine("Type of Account: " + account.AccountType);
@@ -49,11 +46,9 @@ public class DisplayAccounts
         {
             Console.WriteLine("- " + action);
         }
-    }
-}
 
-public class CreateAccounts
-{
+    }
+
     public Account Create(AccountType accountType, decimal balance, decimal overdrafts, string accountNumber, string sortCode)
     {
         // Create an instance of the Account class with the provided parameters.
@@ -63,10 +58,7 @@ public class CreateAccounts
         return newAccount;
 
     }
-}
 
-public class CloseAccounts
-{
     public void Close(Account account)
     {
         // Perform any necessary cleanup or validation before closing the account.
@@ -76,88 +68,131 @@ public class CloseAccounts
         // You may want to remove the account from a list of active accounts or mark it as closed.
 
     }
-}
 
-class Program
-{
-    static void Main(string[] args)
-    {
-        DisplayAccounts displayAccounts = new DisplayAccounts();
-        CreateAccounts createAccounts = new CreateAccounts();
-        CloseAccounts closeAccounts = new CloseAccounts();
+//public class DisplayAccounts
+//{
+//    public void Display(Account account)
+//    {
+//        Console.WriteLine("Type of Account: " + account.AccountType);
+//        Console.WriteLine("Balance: " + account.Balance);
+//        Console.WriteLine("Overdrafts: " + account.Overdrafts);
+//        Console.WriteLine("Account Number: " + account.AccountNumber);
+//        Console.WriteLine("Sort Code: " + account.SortCode);
+//        Console.WriteLine("Account Actions: ");
 
-        Console.WriteLine("Choose an option:");
-        Console.WriteLine("1. Display Accounts");
-        Console.WriteLine("2. Create Account");
-        Console.WriteLine("3. Close Account");
+//        foreach (string action in account.Actions)
+//        {
+//            Console.WriteLine("- " + action);
+//        }
+//    }
+//}
 
-        // User input. 
+//public class CreateAccounts
+//{
+//    public Account Create(AccountType accountType, decimal balance, decimal overdrafts, string accountNumber, string sortCode)
+//    {
+//        // Create an instance of the Account class with the provided parameters.
 
-        string userInput = Console.ReadLine();
+//        Account newAccount = new Account(accountType, balance, overdrafts, accountNumber, sortCode);
 
-        if (userInput == "1")
+//        return newAccount;
 
-        {
-            // Option to display accounts.
-            // Assuming you have a list of accounts to display.
+//    }
+//}
 
-            foreach (var account in accounts)
-            {
-                displayAccounts.Display(account);
-            }
-        }
-        else if (userInput == "2")
-        {
-            // Option to create an account.
-            // You need to collect necessary information from the user to create an account.
-            // Then create an account using CreateAccounts class.
+//public class CloseAccounts
+//{
+//    public void Close(Account account)
+//    {
+//        // Perform any necessary cleanup or validation before closing the account.
 
-            AccountType accountType;
-            decimal balance;
-            decimal overdrafts;
-            string accountNumber;
-            string sortCode;
+//        Console.WriteLine("Closing account with account number: " + account.AccountNumber);
 
-            // Collect information from the user.
+//        // You may want to remove the account from a list of active accounts or mark it as closed.
 
-            Console.WriteLine("Enter account type (Savings/Checking): ");
+//    }
+//}
 
-            Enum.TryParse(Console.ReadLine(), out accountType); // Assume user enters valid type.
-            Console.WriteLine("Enter balance: ");
+//class Program
+//{
+//    static void Main(string[] args)
+//    {
+//        DisplayAccounts displayAccounts = new DisplayAccounts();
+//        CreateAccounts createAccounts = new CreateAccounts();
+//        CloseAccounts closeAccounts = new CloseAccounts();
 
-            decimal.TryParse(Console.ReadLine(), out balance); // Assume user enters valid balance.
-            Console.WriteLine("Enter overdrafts: ");
+//        Console.WriteLine("Choose an option:");
+//        Console.WriteLine("1. Display Accounts");
+//        Console.WriteLine("2. Create Account");
+//        Console.WriteLine("3. Close Account");
 
-            decimal.TryParse(Console.ReadLine(), out overdrafts); // Assume user enters valid overdrafts.
-            Console.WriteLine("Enter account number: ");
+//        // User input. 
 
-            accountNumber = Console.ReadLine(); // Assume user enters valid account number.
-            Console.WriteLine("Enter sort code: ");
+//        string userInput = Console.ReadLine();
 
-            sortCode = Console.ReadLine(); // Assume user enters valid sort code.
+//        if (userInput == "1")
 
-            // Create the account.
+//        {
+//            // Option to display accounts.
+//            // Assuming you have a list of accounts to display.
 
-            Account newAccount = createAccounts.Create(accountType, balance, overdrafts, accountNumber, sortCode);
+//            foreach (var account in accounts)
+//            {
+//                displayAccounts.Display(account);
+//            }
+//        }
+//        else if (userInput == "2")
+//        {
+//            // Option to create an account.
+//            // You need to collect necessary information from the user to create an account.
+//            // Then create an account using CreateAccounts class.
 
-            // Optionally, you may want to add the newly created account to your list of accounts.
-        }
-        else if (userInput == "3")
-        {
-            // Option to close an account.
-            // Assuming you have a list of accounts to choose from.
-            // You need to select an account to close.
-            // Then call Close method from CloseAccounts class.
-            // Close the account.
+//            AccountType accountType;
+//            decimal balance;
+//            decimal overdrafts;
+//            string accountNumber;
+//            string sortCode;
 
-            closeAccounts.Close(accountToClose);
-        }
+//            // Collect information from the user.
 
-        else
-        {
-            // Invalid option
-            Console.WriteLine("Invalid option. Please choose a valid option.");
+//            Console.WriteLine("Enter account type (Savings/Checking): ");
 
-        }
-    }
+//            Enum.TryParse(Console.ReadLine(), out accountType); // Assume user enters valid type.
+//            Console.WriteLine("Enter balance: ");
+
+//            decimal.TryParse(Console.ReadLine(), out balance); // Assume user enters valid balance.
+//            Console.WriteLine("Enter overdrafts: ");
+
+//            decimal.TryParse(Console.ReadLine(), out overdrafts); // Assume user enters valid overdrafts.
+//            Console.WriteLine("Enter account number: ");
+
+//            accountNumber = Console.ReadLine(); // Assume user enters valid account number.
+//            Console.WriteLine("Enter sort code: ");
+
+//            sortCode = Console.ReadLine(); // Assume user enters valid sort code.
+
+//            // Create the account.
+
+//            Account newAccount = createAccounts.Create(accountType, balance, overdrafts, accountNumber, sortCode);
+
+//            // Optionally, you may want to add the newly created account to your list of accounts.
+//        }
+//        else if (userInput == "3")
+//        {
+//            // Option to close an account.
+//            // Assuming you have a list of accounts to choose from.
+//            // You need to select an account to close.
+//            // Then call Close method from CloseAccounts class.
+//            // Close the account.
+
+//            closeAccounts.Close(accountToClose);
+//        }
+
+//        else
+//        {
+//            // Invalid option
+//            Console.WriteLine("Invalid option. Please choose a valid option.");
+
+//        }
+//    }
 }

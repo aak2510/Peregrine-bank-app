@@ -10,7 +10,7 @@ protected class AccountMenu
     private List<Account> _accounts = new List<Account>();
 
     // AccountAppService should be injected. for now it is saved here
-    private AccountService _accountService = new AccountService(IAccountRepository accountRepository);
+    private AccountService _accountService = new AccountService(IAccountRepository, accountRepository);
 
     // Default constructor
     public AccountMenu(Customer customer)

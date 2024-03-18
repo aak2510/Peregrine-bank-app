@@ -122,10 +122,18 @@ class Program
 
     public static void accountInformation()
     {
-        Console.Write("Please enter your account number: ");
-        var accountNumber = Console.ReadLine();
-        Console.Write("Please enter your sort code: ");
-        var sortCode = Console.ReadLine();
+
+        // Ask customer for their credentials, if they are found within the DB then display menu options
+        //if (customerCredential)
+        //{
+            TellerAccountMenu account = new TellerAccountMenu();
+            account.runMenu();
+        //}
+
+        //Console.Write("Please enter your account number: ");
+        //var accountNumber = Console.ReadLine();
+        //Console.Write("Please enter your sort code: ");
+        //var sortCode = Console.ReadLine();
 
         // TO BE COMPLETED
         //// Call the account service to get the account

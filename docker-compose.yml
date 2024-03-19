@@ -1,15 +1,17 @@
-version: '3.8'
+version: "3.8"
 services:
   db:
     container_name: postgres_container
     image: postgres
     restart: always
     environment:
-      POSTGRES_DB: acmebankdb
-      POSTGRES_USER: root
+      POSTGRES_USER: user
       POSTGRES_PASSWORD: root
+      POSTGRES_DB: acmebankdb
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4

@@ -4,7 +4,8 @@
 // // Close Account Details - Delete Accounts. 
 
 using System;
-namespace Domain.Models
+
+namespace AcmeBank.Domain.Models
 {
     public enum AccountType
     {
@@ -102,10 +103,10 @@ namespace Domain.Models
                 // Option to display accounts.
                 // Assuming you have a list of accounts to display.
 
-                foreach (var account in accounts)
-                {
-                    displayAccounts.Display(account);
-                }
+                //foreach (var account in accounts)
+                //{
+                //    displayAccounts.Display(account);
+                //}
             }
             else if (userInput == "2")
             {
@@ -151,7 +152,7 @@ namespace Domain.Models
                 // Then call Close method from CloseAccounts class.
                 // Close the account.
 
-                closeAccounts.Close(accountToClose);
+                // closeAccounts.Close(accountToClose);
             }
 
             else

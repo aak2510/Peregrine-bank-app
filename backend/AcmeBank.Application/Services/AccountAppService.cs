@@ -19,7 +19,10 @@ namespace AcmeBank.Application.Services
 
         public string ReturnAccountsMenu()
         {
+            // should call function that calls database to retrieve userid, passport/driving license and address
             GetUserAccounts();
+            // should verify if the passport/driving license or address is valid
+            // also checks that it returns a non empty results
             if (_accounts.Count > 0)
             {
                 StringBuilder menu = new StringBuilder();
@@ -29,14 +32,22 @@ namespace AcmeBank.Application.Services
                 }
                 return menu.ToString();
             }
+            // if no accounts found
             else
             {
                 return "No accounts found.";
             }
         }
-
+        
+        
+        // method to create new account for user
+        
+        // method to delete account for user
+        
+        // returns all accounts in their name (account detials, sort code) based on user id retrieved above
         public string ReturnAccountByUserSelection(sbyte selection)
         {
+            // returns account details based on user selection
             if (selection - 1 < _accounts.Count)
             {
                 var selectedAccount = _accounts[selection - 1];
@@ -44,6 +55,13 @@ namespace AcmeBank.Application.Services
             }
             return "Invalid selection.";
         }
+        
+        
+        // method to login to specific account and return more details specific to that account
+        
+        // Seperate method to take actions within the account such as deposit, withdraw, transfer
+        
+        // method to logout of account
 
         protected void GetUserAccounts()
         {

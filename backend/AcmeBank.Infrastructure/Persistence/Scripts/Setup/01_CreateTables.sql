@@ -59,14 +59,26 @@ CREATE TABLE tellers (
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
 );
 
--- Create Transactions Table
 CREATE TABLE transactions (
     transaction_id SERIAL PRIMARY KEY,
-    account_id INT,
-    account_type VARCHAR(20), -- 'personal', 'isa', or 'business'
+    personal_account_id INT,
+    isa_account_id INT,
+    business_account_id INT,
     transaction_date TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
     amount DECIMAL(15, 2) NOT NULL,
-    transaction_type VARCHAR(50) NOT NULL, -- e.g., deposit, withdrawal, overdraft, loan, etc?
+    transaction_type VARCHAR(50) NOT NULL,
     description TEXT,
-    CONSTRAINT fk_account_id FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE CASCADE
+    FOREIGN KEY (personal_account_id) REFERENCES personal_accounts(account_id) ON DELETE SET NULL,
+    FOREIGN KEY (isa_account_id) REFERENCES isa_accounts(account_id) ON DELETE SET NULL,
+    FOREIGN KEY (business_account_id) REFERENCES business_accounts(account_id) ON DELETE SET NULL
+);
+
+-- Create SecurityQA Table
+CREATE TABLE SecurityQA (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(user_id),
+    question VARCHAR(255) NOT NULL,
+    answer VARCHAR(255) NOT NULL,
+    UNIQUE (user_id, question),
+    CHECK (LENGTH(answer) >= 3)
 );

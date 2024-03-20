@@ -59,6 +59,7 @@ CREATE TABLE tellers (
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
 );
 
+-- Create Transactions Table
 CREATE TABLE transactions (
     transaction_id SERIAL PRIMARY KEY,
     personal_account_id INT,

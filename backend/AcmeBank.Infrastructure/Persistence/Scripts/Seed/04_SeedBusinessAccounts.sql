@@ -1,0 +1,3 @@
+﻿INSERT INTO business_accounts (user_id, business_name, account_balance, account_number, account_sort_code, has_cheque_book, annual_charge, created_at) VALUES
+                                                                                                                                                           (3, 'AJ Solutions', 5000.00, '47382910', '12-34-56', TRUE, 120.00, NOW()),
+                                                                                                                                                           (1, 'Doe Enterprises', 10000.00, '10293847', '65-43-21', TRUE, 120.00, NOW());

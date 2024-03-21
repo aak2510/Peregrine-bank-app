@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "acmebanktestproject", "acmebanktestproject\acmebanktestproject.csproj", "{5100E26E-C295-4295-B3BE-9C5AD7028855}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peregrine-bank-app", "acmebankproject\acmebankproject.csproj", "{5100E26E-C295-4295-B3BE-9C5AD7028855}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

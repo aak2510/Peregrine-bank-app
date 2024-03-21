@@ -1,6 +1,7 @@
 ﻿using System;
+using Npgsql;
 
-    class Program
+class Program
     {
         // This method is the entry point for running the program.
         public static void RunProgram()
@@ -109,6 +110,34 @@
             // Starts the application.
             //RunProgram();
             System.Console.WriteLine("helloworld");
+            string connString = "Server=localhost;Port=5432;User Id=acme;Password=password123;Database=acme";
+            try
+            {
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open(); // Open the database connection
+
+                    // Define a query to select all users.
+                    string query = "SELECT * FROM users";
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        // Execute the query and obtain a result set.
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read()) // Iterate through each record in the result set
+                            {
+                                // Display the fields from each record.
+                                Console.WriteLine($"Name: {reader["name"]}, Email: {reader["email"]}, Phone: {reader["phone"]}, Passport Number: {reader["passport_number"]}, Address: {reader["address_line1"]} {reader["address_line2"] ?? ""}, City: {reader["city"]}, Postcode: {reader["postcode"]}, Country: {reader["country"]}");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+            
         }
     }
 

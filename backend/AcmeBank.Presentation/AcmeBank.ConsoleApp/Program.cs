@@ -131,7 +131,7 @@ class Program
         Console.Write("Please enter customers country of residence: ");
         string country = Console.ReadLine()?.ToLower().Trim() ?? "";
 
-        if (userVerification.VerifyAddress(firstLineAddress, secondLineAddress, city, postcode, country)){
+        if (userVerification.VerifyAddress(user, firstLineAddress, secondLineAddress, city, postcode, country)){
             TellerMenu tm = new TellerMenu();
             tm.tellerAccountMenu();
         }
@@ -152,7 +152,7 @@ class Program
     {
         // Starts the application.
         RunProgram();
-        //System.Console.WriteLine("helloworld");
+        
     }
 }
 

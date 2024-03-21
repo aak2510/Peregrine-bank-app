@@ -5,8 +5,8 @@ namespace AcmeBank.Application.Interfaces
 {
     public interface IAccountAppService
     {
-        List<Account> VerifyPassport(string passportNumber);
+        List<User> VerifyPassportNumber(string passportNumber);
 
-        bool VerifyAddress(string addressLine1, string addressLine2, string city, string postcode, string country);
+        bool VerifyAddress(User user, string addressLine1, string addressLine2, string city, string postcode, string country);
     }
 }

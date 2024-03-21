@@ -1,4 +1,0 @@
-﻿INSERT INTO users (name, email, phone, passport_number, address_line1, address_line2, city, postcode, country) VALUES
-                                                                                                                   ('John Doe', 'johndoe@example.com', '555-0101', 'AB123456C', '123 Elm St', NULL, 'London', 'E1 4XY', 'United Kingdom'),
-                                                                                                                   ('Jane Smith', 'janesmith@example.com', '555-0102', 'CD789012E', '456 Oak Ave', 'Apt 2B', 'Manchester', 'M1 2AB', 'United Kingdom'),
-                                                                                      ('Alex Johnson', 'alexjohnson@example.com', '555-0103', 'EF345678G', '789 Pine Rd', NULL, 'Bristol', 'BS1 2CD', 'United Kingdom');

@@ -7,6 +7,6 @@ namespace AcmeBank.Application.Interfaces
     {
         List<Account> VerifyPassport(string passportNumber);
         
-        bool VerifyAddress
+        bool VerifyAddress(string addressLine1, string addressLine2, string city, string postcode, string country);
     }
 }

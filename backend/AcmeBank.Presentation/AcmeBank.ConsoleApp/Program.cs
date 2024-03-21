@@ -102,19 +102,43 @@ class Program
     }
 
     // Checks if customer has an account
+// Checks if customer has an account
     public static void customerDetailsInput()
     {
         Console.WriteLine("When prompted, please enter the requested details of the customer to bring up their account detail:");
         AccountAppService userVerification = new AccountAppService();
 
-        Console.Write("Please enter customers Passport Number: ");
-        string passportNumber = Console.ReadLine()?.ToLower().Trim() ?? "";
-        var user = new List<User>();
-        user = userVerification.VerifyPassportNumber(passportNumber);
-        if (user == null)
+        // Initialise the attempts counter.
+        int attempts = 0;
+        // Placeholder for the user object.
+        List<User> users;
+
+        // Loop until the user has been verified or the max attempts have been reached.
+        do
         {
-            return;
+            Console.Write("Please enter customers Passport Number: ");
+            string passportNumber = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+            // VerifyPassportNumber should return a bool and output a List<User> if true
+            if (userVerification.VerifyPassportNumber(passportNumber, out users))
+            {
+                Console.WriteLine("User account exists.");
+                // You can now work with the 'users' list
+                break;
+            }
+            // Increment the attempts counter.
+            attempts++;
+            // If the user has reached the max attempts, then exit the loop.
+            if (attempts == 3)
+            {
+                Console.WriteLine("Too many login attempts, goodbye.");
+                return;
+            }
+            Console.WriteLine($"User account doesn't exist. You have {3 - attempts} login attempts left.  Please ensure you enter the details accurately");
         }
+        while (attempts < 3);
+    
+        
 
         Console.Write("Please enter customers First Line of customer address: ");
         string firstLineAddress = Console.ReadLine()?.ToLower().Trim() ?? "";
@@ -131,7 +155,7 @@ class Program
         Console.Write("Please enter customers country of residence: ");
         string country = Console.ReadLine()?.ToLower().Trim() ?? "";
 
-        if (userVerification.VerifyAddress(user[0], firstLineAddress, secondLineAddress, city, postcode, country)){
+        if (userVerification.VerifyAddress(users[0], firstLineAddress, secondLineAddress, city, postcode, country)){
             TellerMenu tm = new TellerMenu();
             tm.tellerAccountMenu();
         }

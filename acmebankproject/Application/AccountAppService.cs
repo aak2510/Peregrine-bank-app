@@ -5,13 +5,13 @@ namespace acmebanktestproject.Application;
 
     public class AccountMenu
     {
-        private Customer _customer;
+        private User _user;
         private List<Account> _accounts = new List<Account>();
         //private readonly IAccountService _accountService;
 
-        public AccountMenu(Customer customer)
+        public AccountMenu(User user)
         {
-            _customer = customer;
+            _user = user;
         }
         
         
@@ -70,7 +70,7 @@ namespace acmebanktestproject.Application;
         protected void GetUserAccounts()
         {
             // Retrieves user accounts from the database based on the user's ID
-            // var searchResults = _accountService.GetAccountsByUserID(_customer.ID);
+            // var searchResults = _accountService.GetAccountsByUserID(_user.ID);
             // if (searchResults != null && searchResults.Count > 0)
             //{
               //  _accounts = searchResults;

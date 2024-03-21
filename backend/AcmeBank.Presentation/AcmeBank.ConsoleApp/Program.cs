@@ -1,117 +1,157 @@
-﻿using System;
-using Npgsql;
+﻿using AcmeBank.Application.Services;
+using AcmeBank.Domain.Models;
 
-namespace AcmeBank.ConsoleApp
+class Program
 {
-    class Program
+    // This method is the entry point for running the program.
+    public static void RunProgram()
     {
-        // This method is the entry point for running the program.
-        public static void RunProgram()
-        {
-            Console.WriteLine(@"
-                Welcome to Acme Bank!
-                This is the teller login screen. Please enter your username and password when prompted.
-                You only have 3 attempts before being locked out.
-            ");
+        Console.WriteLine("""
+            Welcome to Acme Bank!
+            This is the teller login screen. Please enter your username and password when prompted.
+            You only have 3 attempts before being locked out.
 
-            // If successful user login, then ask for customer credentials and check if an account exists.
-            if (TellerLogIn())
+            """);
+
+        // If successful user login, then ask for customer credentials and check if an account exists.
+        if (TellerLogIn())
+        {
+            TellerMenu();
+        }
+        else
+        {
+            // If teller login reaches max attempts, then we assume they would be locked out and have to ask IT team to reset password.
+            Console.WriteLine("Please contact the IT administration team.");
+        }
+    }
+
+    // Handles the login logic for the teller.
+    public static bool TellerLogIn()
+    {
+        // Placeholder information for login, replace with database query.
+        string name = "teller";
+        string password = "password";
+        int maxLogInAttempt = 3;
+
+        do
+        {
+            // Ask user for username, not case sensitive, so we convert to the same case.
+            Console.Write("Please enter your username: ");
+            string inputUsername = Console.ReadLine()?.ToLower().Trim() ?? "";
+            // Password IS case sensitive, so we don't change case.
+            Console.Write("Please enter your password: ");
+            string inputPassword = Console.ReadLine()?.Trim() ?? "";
+
+            // Placeholder logic for checking credentials, replace with actual database check.
+            if (inputUsername == name && inputPassword == password)
             {
-                TellerMenu();
+                return true;
             }
             else
             {
-                // If teller login reaches max attempts, then we assume they would be locked out and have to ask IT team to reset password.
-                Console.WriteLine("Please contact the IT administration team.");
+                maxLogInAttempt -= 1;
+                if (maxLogInAttempt == 0)
+                {
+                    Console.WriteLine("Too many attempts - you have been locked out.");
+                    return false;
+                }
+                Console.WriteLine($"Username or password is incorrect. You have {maxLogInAttempt} attempts left, please try again.\n");
             }
-        }
 
-        // Handles the login logic for the teller.
-        public static bool TellerLogIn()
+        } while (true); // Loop continues until a valid login or lockout.
+    }
+
+    // Displays the main menu to the teller after a successful login.
+    public static void TellerMenu()
+    {
+        do
         {
-            // Placeholder information for login, replace with database query.
-            string name = "teller";
-            string password = "password";
-            int maxLogInAttempt = 3;
+            Console.WriteLine("""
+                
+                ==========================================================
+                                    Teller - Main menu
+                        Please choose one of the following options:
+                                    1. Customer accounts.
+                                    2. Sign out/Exit the system.
 
-            do
+                """);
+
+            Console.Write(@"Please choose option ""1"" or ""2"": ");
+            if (int.TryParse(Console.ReadLine(), out int menuChoice))
             {
-                // Ask user for username, not case sensitive, so we convert to the same case.
-                Console.Write("Please enter your username: ");
-                string inputUsername = Console.ReadLine()?.ToLower().Trim() ?? "";
-                // Password IS case sensitive, so we don't change case.
-                Console.Write("Please enter your password: ");
-                string inputPassword = Console.ReadLine()?.Trim() ?? "";
-
-                // Placeholder logic for checking credentials, replace with actual database check.
-                if (inputUsername == name && inputPassword == password)
+                switch (menuChoice)
                 {
-                    return true;
+                    case 1:
+                        // Placeholder for handling customer accounts.
+                        customerDetailsInput();
+                        break;
+                    case 2:
+                        // Exiting the program for now, but in a real application, you might want to log out the user.
+                        return;
+                    default:
+                        Console.WriteLine("Unknown option, please try again.");
+                        break;
                 }
-                else
-                {
-                    maxLogInAttempt -= 1;
-                    if (maxLogInAttempt == 0)
-                    {
-                        Console.WriteLine("Too many attempts - you have been locked out.");
-                        return false;
-                    }
-                    Console.WriteLine($"Username or password is incorrect. You have {maxLogInAttempt} attempts left, please try again.\n");
-                }
-
-            } while (true); // Loop continues until a valid login or lockout.
-        }
-
-        // Displays the main menu to the teller after a successful login.
-        public static void TellerMenu()
-        {
-            do
+            }
+            else
             {
-                Console.WriteLine(@"
-                    ==========================================================
-                                      Teller - Main menu
-                          Please choose one of the following options:
-                                      1. Customer accounts.
-                                      2. Sign out/Exit the system.
-                ");
+                Console.WriteLine("Invalid input, please try again.");
+            }
+        } while (true); // Loop continues until the user decides to exit.
+    }
 
-                Console.Write(@"Please choose option ""1"" or ""2"": ");
-                if (int.TryParse(Console.ReadLine(), out int menuChoice))
-                {
-                    switch (menuChoice)
-                    {
-                        case 1:
-                            // Placeholder for handling customer accounts.
-                            AccountInformation();
-                            break;
-                        case 2:
-                            // Exiting the program for now, but in a real application, you might want to log out the user.
-                            return;
-                        default:
-                            Console.WriteLine("Unknown option, please try again.");
-                            break;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Invalid input, please try again.");
-                }
-            } while (true); // Loop continues until the user decides to exit.
-        }
+    // Checks if customer has an account
+    public static void customerDetailsInput()
+    {
+        Console.WriteLine("When prompted, please enter the requested details of the customer to bring up their account detail:");
+        AccountAppService userVerification = new AccountAppService();
 
-        // Placeholder for displaying account information, requires implementation.
-        // Method to display account information.
-        public static void VerifyPassport()
+        Console.Write("Please enter customers Passport Number: ");
+        string passportNumber = Console.ReadLine()?.ToLower().Trim() ?? "";
+        var user = new List<User>();
+        user = userVerification.VerifyPassportNumber(passportNumber);
+        if (user == null)
         {
-            // Placeholder for handling account information.
-            Console.WriteLine("Placeholder for handling account information.");
+            return;
         }
 
-        // Main entry point of the program.
-        static void Main(string[] args)
-        {
-            // Starts the application.
-            RunProgram();
+        Console.Write("Please enter customers First Line of customer address: ");
+        string firstLineAddress = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        Console.Write("Please enter customers Second Line of customer address: ");
+        string secondLineAddress = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        Console.Write("Please enter customers city of residence: ");
+        string city = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        Console.Write("Please enter customers Postcode: ");
+        string postcode = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        Console.Write("Please enter customers country of residence: ");
+        string country = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        if (userVerification.VerifyAddress(firstLineAddress, secondLineAddress, city, postcode, country){
+            TellerMenu tm = new TellerMenu();
+            tm.tellerAccountMenu();
         }
+        else
+        {
+            Console.WriteLine("User account doesn't exist. Please make sure you have entered the details correctly.");
+        }
+
+
+
+
+
+    }
+
+
+    // Main entry point of the program.
+    static void Main(string[] args)
+    {
+        // Starts the application.
+        RunProgram();
+        //System.Console.WriteLine("helloworld");
     }
 }
+

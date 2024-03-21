@@ -61,7 +61,7 @@ namespace AcmeBank.Application.Services
         }
 
 
-        public bool (User user, string addressLine1, string addressLine2, string city, string postcode, string country)
+        public bool VerifyAddress(string addressLine1, string addressLine2, string city, string postcode, string country)
         {
             // Check AddressLine1
             bool isAddressLine1Valid = string.Equals(user.AddressLine1, addressLine1, StringComparison.OrdinalIgnoreCase);
@@ -78,4 +78,6 @@ namespace AcmeBank.Application.Services
             // If all parts of the address are valid, return true
             return isAddressLine1Valid && isAddressLine2Valid && isCityValid && isPostcodeValid && isCountryValid;
         }
+
+    }
 }

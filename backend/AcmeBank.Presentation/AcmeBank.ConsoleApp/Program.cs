@@ -103,7 +103,7 @@ namespace AcmeBank.ConsoleApp
         // Method to display account information.
         public static void AccountInformation()
         {
-            string connString = "Server=localhost;Port=5432;User Id=postgres;Password=9596;Database=acmebanktestdb";
+            string connString = "Server=localhost;Port=5432;User Id=postgres;Password=9596;Database=acmebankdb";
 
             try
             {

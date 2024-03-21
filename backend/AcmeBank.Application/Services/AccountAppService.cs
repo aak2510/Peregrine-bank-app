@@ -16,7 +16,7 @@ namespace AcmeBank.Application.Services
             _customer = customer;
             _accountService = accountService;
         }
-
+        
         public string ReturnAccountsMenu()
         {
             // should call function that calls database to retrieve userid, passport/driving license and address
@@ -26,6 +26,7 @@ namespace AcmeBank.Application.Services
             if (_accounts.Count > 0)
             {
                 StringBuilder menu = new StringBuilder();
+                
                 foreach (var account in _accounts)
                 {
                     menu.AppendLine($"{account.AccountNumber} - {account.AccountType}: Balance {account.Balance}");
@@ -55,7 +56,6 @@ namespace AcmeBank.Application.Services
             }
             return "Invalid selection.";
         }
-        
         
         // method to login to specific account and return more details specific to that account
         

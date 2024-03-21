@@ -78,4 +78,6 @@ namespace AcmeBank.Application.Services
             // If all parts of the address are valid, return true
             return isAddressLine1Valid && isAddressLine2Valid && isCityValid && isPostcodeValid && isCountryValid;
         }
+
+    }
 }

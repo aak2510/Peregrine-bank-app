@@ -7,19 +7,29 @@ using Npgsql;
 class PersonalAccount
 {
     //Store the user details
+    private int _userId;
     private User _user;
+    private string? _userName;
 
     private NpgsqlConnection _conn;
     // Query database and populate fields;
 
-    #region Constructors
-
-    public PersonalAccount(User user, NpgsqlConnection conn)
+    #region Constructors - Create and View/Edit
+    
+    // Create Personal Account constructor
+    public PersonalAccount(User user)
     {
-        _user = user;
-        _conn = conn;
+        this._user = user;
     }
-
+    // View/Edit Personal Account Constructor
+    
+    // testing database constructor
+    public PersonalAccount(int user_id)
+    {
+        string connString = "Server=localhost;Port=5432;User Id=acme;Password=password123;Database=acme";
+        this._conn = new NpgsqlConnection(connString);
+        this._userId = user_id;
+    }
     #endregion
     
     
@@ -39,6 +49,10 @@ class PersonalAccount
         if (this._user == null)
         {
             //Search for user
+            Console.WriteLine("there is no user object.");
+            Console.WriteLine("lets try with userid");
+            this.SearchDBWithObjectsUserID();
+            
         }
         else
         {
@@ -53,8 +67,26 @@ class PersonalAccount
     
 
     // view account 
+    public void DisplayUserPersonalAccountById()
+    {
+        //query
+        //string query
+        
+    }
 
     // close account
 
-    //
+    //Search database methods
+
+    private void SearchDBWithObjectsUserID()
+    {
+        this._conn.Open();
+        string query = $"SELECT * FROM users WHERE user_id = {this._userId}";
+        var cmd = new NpgsqlCommand(query, this._conn);
+        var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            Console.WriteLine($"{reader["name"]}");
+        }
+    }
 }

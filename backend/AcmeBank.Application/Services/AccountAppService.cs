@@ -1,84 +1,81 @@
-// using AcmeBank.Domain.Models; // Customer is in the Models namespace
-// using AcmeBank.Domain.Services;
-// using System.Collections.Generic; 
-// using System.Text;
-// using Npgsql;
-//
-// namespace AcmeBank.Application.Services
-// {
-//     public class AccountMenu
-//     {
-//         private Customer _customer;
-//         private List<Account> _accounts = new List<Account>();
-//         //private readonly IAccountService _accountService;
-//
-//         public AccountMenu(Customer customer, accountService)
-//         {
-//             _customer = customer;
-//             _accountService = accountService;
-//         }
-//         
-//         
-//         public string ReturnAccountsMenu()
-//         {
-//             // Calls function that calls database to retrieve userid, passport/driving license and address
-//             GetUserAccounts();
-//             // Should verify if the passport/driving license or address is valid
-//             // Also checks that it returns a non-empty results
-//             if (_accounts.Count > 0)
-//             {
-//                 StringBuilder menu = new StringBuilder();
-//                 
-//                 foreach (var account in _accounts)
-//                 {
-//                     // Displays account number, type, and balance
-//                     menu.AppendLine($"{account.AccountNumber} - {account.AccountType}: Balance {account.Balance}");
-//                 }
-//                 return menu.ToString();
-//             }
-//             else
-//             {
-//                 // If no accounts are found, returns this message
-//                 return "No accounts found.";
-//             }
-//         }
-//         
-//         // Method to create a new account for user
-//         // TODO: Implement account creation logic
-//         
-//         // Method to delete an account for a user
-//         // TODO: Implement account deletion logic
-//         
-//         // Returns all accounts in their name (account details, sort code) based on user id retrieved above
-//         public string ReturnAccountByUserSelection(sbyte selection)
-//         {
-//             // Returns account details based on user selection
-//             if (selection - 1 < _accounts.Count)
-//             {
-//                 var selectedAccount = _accounts[selection - 1];
-//                 return $"Selected Account {selectedAccount.AccountNumber}: Balance {selectedAccount.Balance}";
-//             }
-//             // If the selection is invalid, returns this message
-//             return "Invalid selection.";
-//         }
-//         
-//         // Method to login to a specific account and return more details specific to that account
-//         // TODO: Implement login functionality
-//         
-//         // Separate method to take actions within the account such as deposit, withdraw, transfer
-//         // TODO: Implement account transaction functionalities
-//         
-//         // Method to logout of account
-//         // TODO: Implement logout functionality
-//
-//         protected void GetUserAccounts()
-//         {
-//             // Retrieves user accounts from the database based on the user's ID
-//             var searchResults = _accountService.GetAccountsByUserID(_customer.ID);
-//             if (searchResults != null && searchResults.Count > 0)
-//             {
-//                 _accounts = searchResults;
-//             }
-//         }
-//     }
-// }
+using AcmeBank.Application.Interfaces;
+using AcmeBank.Domain.Models;
+using System;
+using System.Collections.Generic;
+using Npgsql;
+
+namespace AcmeBank.Application.Services
+{
+    public class AccountAppService : IAccountAppService
+    {
+        private readonly string _connectionString;
+
+        public AccountAppService()
+        {
+            _connectionString = "Server=localhost;Port=5432;User Id=postgres;Password=9596;Database=acmebanktestdb";
+        }
+
+        public List<User> VerifyPassportNumber(string passportNumber)
+        {
+            var users = new List<User>();
+
+            if (!string.IsNullOrEmpty(passportNumber))
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    conn.Open();
+                    string query = @"
+                SELECT id, name, email, phone, passport_number, address_line1, address_line2, city, postcode, country
+                FROM users
+                WHERE passport_number = @passportNumber;
+            ";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@passportNumber", passportNumber);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                users.Add(new User(
+                                    reader["name"].ToString(),
+                                    reader["email"].ToString(),
+                                    reader["phone"].ToString(),
+                                    reader["passport_number"].ToString(),
+                                    reader["address_line1"].ToString(),
+                                    reader.IsDBNull(reader.GetOrdinal("address_line2"))
+                                        ? null
+                                        : reader["address_line2"].ToString(),
+                                    reader["city"].ToString(),
+                                    reader["postcode"].ToString(),
+                                    reader["country"].ToString()
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return users;
+        }
+
+
+        public bool (User user, string addressLine1, string addressLine2, string city, string postcode, string country)
+        {
+            // Check AddressLine1
+            bool isAddressLine1Valid = string.Equals(user.AddressLine1, addressLine1, StringComparison.OrdinalIgnoreCase);
+
+            // Check AddressLine2, accounting for nulls on both sides
+            bool isAddressLine2Valid = (user.AddressLine2 == null && addressLine2 == null) ||
+                                       (user.AddressLine2 != null && user.AddressLine2.Equals(addressLine2, StringComparison.OrdinalIgnoreCase));
+
+            // Similar checks for City, Postcode, and Country
+            bool isCityValid = string.Equals(user.City, city, StringComparison.OrdinalIgnoreCase);
+            bool isPostcodeValid = string.Equals(user.Postcode, postcode, StringComparison.OrdinalIgnoreCase);
+            bool isCountryValid = string.Equals(user.Country, country, StringComparison.OrdinalIgnoreCase);
+
+            // If all parts of the address are valid, return true
+            return isAddressLine1Valid && isAddressLine2Valid && isCityValid && isPostcodeValid && isCountryValid;
+        }
+}

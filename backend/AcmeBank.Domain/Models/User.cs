@@ -4,7 +4,7 @@
 
 namespace AcmeBank.Domain.Models
 {
-    public class Customer
+    public class User
     {
         public string Name { get; set; }
         public string Email { get; set; }
@@ -16,7 +16,7 @@ namespace AcmeBank.Domain.Models
         public string Postcode { get; set; }
         public string Country { get; set; }
 
-        public Customer(string name, string email, string phone, string passportNumber, 
+        public User(string name, string email, string phone, string passportNumber, 
                         string addressLine1, string addressLine2, string city, 
                         string postcode, string country)
         {
@@ -30,25 +30,7 @@ namespace AcmeBank.Domain.Models
             Postcode = postcode;
             Country = country;
         }
-
-        // Example method to validate customer information
-        // This method can be expanded based on specific validation requirements
-        public bool ValidateInformation()
-        {
-            // Basic validation example: Ensure no required fields are empty
-            bool isValid = !string.IsNullOrWhiteSpace(Name) &&
-                           !string.IsNullOrWhiteSpace(Email) &&
-                           !string.IsNullOrWhiteSpace(Phone) &&
-                           !string.IsNullOrWhiteSpace(PassportNumber) &&
-                           !string.IsNullOrWhiteSpace(AddressLine1) &&
-                           !string.IsNullOrWhiteSpace(City) &&
-                           !string.IsNullOrWhiteSpace(Postcode) &&
-                           !string.IsNullOrWhiteSpace(Country);
-
-            // Additional validation logic can be added here
-
-            return isValid;
-        }
+        
 
         // Additional functionalities related to Customer can be added here
         // For example: UpdateInformation, DeactivateAccount, etc.

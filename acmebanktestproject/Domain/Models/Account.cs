@@ -1,4 +1,3 @@
-namespace acmebanktestproject.Domain.Models;
 
 public enum AccountType
     {

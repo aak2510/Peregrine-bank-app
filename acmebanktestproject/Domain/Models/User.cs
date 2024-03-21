@@ -1,4 +1,4 @@
-public class Customer
+public class User
 {
         public string Name { get; set; }
         public string Email { get; set; }
@@ -10,7 +10,7 @@ public class Customer
         public string Postcode { get; set; }
         public string Country { get; set; }
 
-        public Customer(string name, string email, string phone, string passportNumber, 
+        public User(string name, string email, string phone, string passportNumber, 
                         string addressLine1, string addressLine2, string city, 
                         string postcode, string country)
         {

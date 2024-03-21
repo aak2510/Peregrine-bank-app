@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Reflection.Metadata.Ecma335;
+using acmebanktestproject.Application;
+using Npgsql;
 
 class Program
 {
@@ -82,7 +85,7 @@ class Program
                 {
                     case 1:
                         // Placeholder for handling customer accounts.
-                        AccountInformation();
+                        customerDetailsInput();
                         break;
                     case 2:
                         // Exiting the program for now, but in a real application, you might want to log out the user.
@@ -99,12 +102,59 @@ class Program
         } while (true); // Loop continues until the user decides to exit.
     }
 
-    // Placeholder for displaying account information, requires implementation.
-    public static void AccountInformation()
+    // Checks if customer has an account
+    public static void customerDetailsInput()
     {
-        TellerMenu tellerMenu = new TellerMenu();
-        tellerMenu.tellerAccountMenu();
+        Console.WriteLine("""
+
+            When prompted, please enter the following details of the customer to bring up their account detail:
+            -> Passport Number
+            -> First Line of customer address
+            -> City of residence
+            -> Postcode
+            
+            """);
+        AccountMenu tellerMenu = new AccountMenu();
+        
+        Console.Write("Please enter customers Passport Number: ");
+        string passportNumber = Console.ReadLine()?.ToLower().Trim() ?? "";
+        var user = new List<User>();
+        user = tellerMenu.VerifyPassportNumber(passportNumber);
+        if (user == null)
+        {
+            return;
+        }
+
+        Console.Write("Please enter customers First Line of customer address: ");
+        string firstLineAddress = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        Console.Write("Please enter customers Second Line of customer address: ");
+        string secondLineAddress = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        Console.Write("Please enter customers city of residence: ");
+        string city = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        Console.Write("Please enter customers Postcode: ");
+        string postcode = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        Console.Write("Please enter customers country of residence: ");
+        string country = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        if (tellerMenu.VerifyAddress(firstLineAddress, secondLineAddress, city, postcode, country){
+            TellerMenu tm = new TellerMenu();
+            tm.tellerAccountMenu();
+        }
+        else
+        {
+            Console.WriteLine("User account doesn't exist. Please make sure you have entered the details correctly.");
+        }
+   
+
+
+
+
     }
+
 
     // Main entry point of the program.
     static void Main(string[] args)

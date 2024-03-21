@@ -5,11 +5,11 @@ namespace acmebanktestproject.Application;
 
     public class AccountMenu
     {
-        private Customer _customer;
+        private User _customer;
         private List<Account> _accounts = new List<Account>();
         //private readonly IAccountService _accountService;
 
-        public AccountMenu(Customer customer)
+        public AccountMenu(User customer)
         {
             _customer = customer;
         }

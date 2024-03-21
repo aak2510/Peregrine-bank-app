@@ -114,16 +114,17 @@ class Program
             -> Postcode
             
             """);
-        AccountMenu tellerMenu = new AccountMenu();
-        
+        TellerMenu tellerMenu = new TellerMenu();
+
         Console.Write("Please enter customers Passport Number: ");
         string passportNumber = Console.ReadLine()?.ToLower().Trim() ?? "";
-        var user = new List<User>();
-        user = tellerMenu.VerifyPassportNumber(passportNumber);
-        if (user == null)
-        {
-            return;
-        }
+        // To be implemented in Misha's branch
+        //var user = new List<User>();
+        //user = tellerMenu.VerifyPassportNumber(passportNumber);
+        //if (user == null)
+        //{
+        //    return;
+        //}
 
         Console.Write("Please enter customers First Line of customer address: ");
         string firstLineAddress = Console.ReadLine()?.ToLower().Trim() ?? "";
@@ -140,15 +141,17 @@ class Program
         Console.Write("Please enter customers country of residence: ");
         string country = Console.ReadLine()?.ToLower().Trim() ?? "";
 
-        if (tellerMenu.VerifyAddress(firstLineAddress, secondLineAddress, city, postcode, country){
-            TellerMenu tm = new TellerMenu();
-            tm.tellerAccountMenu();
-        }
-        else
-        {
-            Console.WriteLine("User account doesn't exist. Please make sure you have entered the details correctly.");
-        }
-   
+        // To be implemented in Misha's branch
+        //if (tellerMenu.VerifyAddress(firstLineAddress, secondLineAddress, city, postcode, country){
+        // These two lines are also a part of the If statement
+        TellerMenu tm = new TellerMenu();
+        tm.tellerAccountMenu();
+        //}
+        //else
+        //{
+        //    Console.WriteLine("User account doesn't exist. Please make sure you have entered the details correctly.");
+        //}
+
 
 
 

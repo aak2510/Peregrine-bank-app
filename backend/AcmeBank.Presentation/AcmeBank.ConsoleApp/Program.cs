@@ -1,4 +1,5 @@
 ﻿using System;
+using Npgsql;
 
 namespace AcmeBank.ConsoleApp
 {
@@ -99,10 +100,37 @@ namespace AcmeBank.ConsoleApp
         }
 
         // Placeholder for displaying account information, requires implementation.
+        // Method to display account information.
         public static void AccountInformation()
         {
-            // This method would interact with the banking system to retrieve and display account information.
-            Console.WriteLine("Account information feature is not implemented yet.");
+            string connString = "Host=localhost;Port=5432;Username=user;Password=root;Database=acmebankdb";
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open(); // Open the database connection
+
+                    // Define a query to select all users.
+                    string query = "SELECT * FROM users";
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        // Execute the query and obtain a result set.
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read()) // Iterate through each record in the result set
+                            {
+                                // Display the fields from each record.
+                                Console.WriteLine($"Name: {reader["name"]}, Email: {reader["email"]}, Phone: {reader["phone"]}, Passport Number: {reader["passport_number"]}, Address: {reader["address_line1"]} {reader["address_line2"] ?? ""}, City: {reader["city"]}, Postcode: {reader["postcode"]}, Country: {reader["country"]}");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
         }
 
         // Main entry point of the program.

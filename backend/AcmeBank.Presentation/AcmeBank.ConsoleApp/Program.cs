@@ -7,6 +7,7 @@ class Program
     public static void RunProgram()
     {
         Console.WriteLine("""
+
             Welcome to Acme Bank!
             This is the teller login screen. Please enter your username and password when prompted.
             You only have 3 attempts before being locked out.

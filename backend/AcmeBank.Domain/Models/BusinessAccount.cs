@@ -1,3 +1,7 @@
+//  A subclass for business-related banking accounts
+// incorporating business-specific properties and operations
+// e.g. loans/overdrafts, cheque books, etc.
+
 class BusinessAccount : Account
 {
     //stored in database, retrieved by querying 

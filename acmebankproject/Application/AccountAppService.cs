@@ -1,7 +1,5 @@
 using Npgsql;
 
-namespace AcmeBank.Application.Services
-{
     public class AccountAppService : IAccountAppService
     {
         private readonly string _connectionString;
@@ -76,4 +74,3 @@ namespace AcmeBank.Application.Services
         }
 
     }
-}

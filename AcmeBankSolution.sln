@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{D62B4F76-E2ED-4CCC-937E-47D7EA887042}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmeBank.Domain", "backend\AcmeBank.Domain\AcmeBank.Domain.csproj", "{36F3C634-05A8-4455-AA0B-00A72863357C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmeBank.Application", "backend\AcmeBank.Application\AcmeBank.Application.csproj", "{94EE815B-88F3-45E0-AE05-6C10448239C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmeBank.Infrastructure", "backend\AcmeBank.Infrastructure\AcmeBank.Infrastructure.csproj", "{6D72BFAB-0D85-4E9F-9A9C-AEFFF8E5428B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AcmeBank.Presentation", "AcmeBank.Presentation", "{3EC3FCC4-1579-46E8-A165-FCEE693BB90B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmeBank.ConsoleApp", "backend\AcmeBank.Presentation\AcmeBank.ConsoleApp\AcmeBank.ConsoleApp.csproj", "{A56D5283-5193-49B6-9CEB-3219D9F91A97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmeBank.Tests", "backend\AcmeBank.Tests\AcmeBank.Tests.csproj", "{5EB04B52-0FDD-4FD1-8ED2-2EE1B10BFA84}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36F3C634-05A8-4455-AA0B-00A72863357C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36F3C634-05A8-4455-AA0B-00A72863357C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36F3C634-05A8-4455-AA0B-00A72863357C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36F3C634-05A8-4455-AA0B-00A72863357C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94EE815B-88F3-45E0-AE05-6C10448239C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94EE815B-88F3-45E0-AE05-6C10448239C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94EE815B-88F3-45E0-AE05-6C10448239C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94EE815B-88F3-45E0-AE05-6C10448239C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D72BFAB-0D85-4E9F-9A9C-AEFFF8E5428B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D72BFAB-0D85-4E9F-9A9C-AEFFF8E5428B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D72BFAB-0D85-4E9F-9A9C-AEFFF8E5428B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D72BFAB-0D85-4E9F-9A9C-AEFFF8E5428B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A56D5283-5193-49B6-9CEB-3219D9F91A97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A56D5283-5193-49B6-9CEB-3219D9F91A97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A56D5283-5193-49B6-9CEB-3219D9F91A97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A56D5283-5193-49B6-9CEB-3219D9F91A97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EB04B52-0FDD-4FD1-8ED2-2EE1B10BFA84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EB04B52-0FDD-4FD1-8ED2-2EE1B10BFA84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EB04B52-0FDD-4FD1-8ED2-2EE1B10BFA84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EB04B52-0FDD-4FD1-8ED2-2EE1B10BFA84}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{36F3C634-05A8-4455-AA0B-00A72863357C} = {D62B4F76-E2ED-4CCC-937E-47D7EA887042}
+		{94EE815B-88F3-45E0-AE05-6C10448239C6} = {D62B4F76-E2ED-4CCC-937E-47D7EA887042}
+		{6D72BFAB-0D85-4E9F-9A9C-AEFFF8E5428B} = {D62B4F76-E2ED-4CCC-937E-47D7EA887042}
+		{3EC3FCC4-1579-46E8-A165-FCEE693BB90B} = {D62B4F76-E2ED-4CCC-937E-47D7EA887042}
+		{A56D5283-5193-49B6-9CEB-3219D9F91A97} = {3EC3FCC4-1579-46E8-A165-FCEE693BB90B}
+		{5EB04B52-0FDD-4FD1-8ED2-2EE1B10BFA84} = {D62B4F76-E2ED-4CCC-937E-47D7EA887042}
+	EndGlobalSection
+EndGlobal

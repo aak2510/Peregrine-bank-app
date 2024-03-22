@@ -123,3 +123,24 @@ namespace AcmeBank.ConsoleApp
         }
     }
 }
+
+
+// // Method to call when the teller chooses the option to create an account
+
+// // Handling the option when the teller chooses to create an account
+
+// case 1:
+//     Console.WriteLine("Creating an account.");
+
+//     // Attempting to create the account using provided parameters
+
+//     if (accountAppService.CreateAccount(userId, accountType, balance, currency))
+//     {
+//         Console.WriteLine("Account created successfully.");
+//     }
+
+//     else
+//     {
+//         Console.WriteLine("Failed to create account.");
+//     }
+//     break;

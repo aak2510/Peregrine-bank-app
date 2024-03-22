@@ -12,8 +12,14 @@ class PersonalAccount
     private User _user;
     private string? _userName;
     private int _accountId;
+    private bool _hasOverdraft;
+    private decimal _userBalance;
 
     private string _connectionString;
+    
+    private Dictionary<string,string> _queries = new Dictionary<string, string>();
+
+    
     // Query database and populate fields;
 
     #region Constructors - Create and View/Edit
@@ -40,7 +46,24 @@ class PersonalAccount
         this._accountId = account_id;
     }
     #endregion
-    
+
+    private void setQueries()
+    {
+        string query1 = """
+                        START TRANSACTION;
+                        UPDATE personal_accounts
+                        SET account_balance = account_balance - 150
+                        WHERE user_id = 1 AND account_id = 2 AND account_balance > 150;
+                        IF (row_affected_by_update > 0) THEN 
+                            INSERT INTO transactions (personal_account_id, amount, transaction_type)
+                            VALUES (2, 150, 'withdrawal');
+                        END IF;
+                        
+                        COMMIT;
+                        """;
+        string queryDescription1 = "withdrawal";
+        this._queries.Add(queryDescription1,query1);
+    }
     
     
 
@@ -104,7 +127,7 @@ class PersonalAccount
     {
         // check current balance of account with db call
         string query = """
-                        SELECT p.account_balance, p.overdraft, p. u.name
+                        SELECT p.account_balance, p.overdraft, u.name
                         FROM personal_accounts p
                         INNER JOIN users u
                         ON p.user_id = u.user_id
@@ -115,8 +138,25 @@ class PersonalAccount
         List<string> result = RunQuery(query);
         Console.WriteLine($"account has £{result[0]}");
         // how much to withdraw?
-        Console.WriteLine("How much does the customer wish to withdraw?");
+        decimal maxWithdrawal = this._userBalance + 1500.00m;
+        Console.WriteLine($"""
+                          How much does the customer wish to withdraw?
+                          Max is {maxWithdrawal}\n
+                          """);
+        
         // Check again and withdraw
+        string input = Console.ReadLine();
+        decimal amountToWithdraw;
+        bool parseSuccessful = false;
+        if (input != null && input != ""){
+            do
+            { 
+                parseSuccessful = Decimal.TryParse(input, out amountToWithdraw);
+            } while (!parseSuccessful);
+            //now withdraw 
+            
+        }
+        
         // return success of failure
     }
 
@@ -144,7 +184,15 @@ class PersonalAccount
                 {
                     while (reader.Read())
                     {
+                        decimal readerDecimalParseValue;
+                        this._userBalance = Decimal.TryParse(reader["account_balance"].ToString(), out readerDecimalParseValue) ? readerDecimalParseValue : 0;
+                        
                         results.Add(reader["account_balance"].ToString());
+                        if (reader["overdraft"] != null && reader["overdraft"].Equals(true))
+                        {
+                            this._hasOverdraft = true;
+                        }
+                        
                     }
                 }
             }

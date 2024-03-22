@@ -42,6 +42,7 @@ namespace AcmeBank.Application.Services
                         while (reader.Read())
                         {
                             users.Add(new User(
+                                reader["user_id"].ToString(),
                                 reader["name"].ToString(),
                                 reader["email"].ToString(),
                                 reader["phone"].ToString(),
@@ -81,6 +82,52 @@ namespace AcmeBank.Application.Services
             // && isAddressLine2Valid && isCityValid && isPostcodeValid && isCountryValid;
             return isAddressLine1Valid;
         }
+        
+        public string GetSecurityQuestion(User user)
+        {
+            if (user == null)
+            {
+                return null;
+            }
+
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+                string query = @"
+            SELECT security_question
+            FROM users
+            WHERE user_id = @userId;
+
+        ";
+
+                using (var cmd = new NpgsqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@userId", user.UserId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return reader["security_question"].ToString();
+                        }
+                    }
+                }
+            }
+        
+        public bool VerifySecurityQuestion(User user, string securityQuestion, string securityAnswer)
+        {
+            if (user == null || string.IsNullOrEmpty(securityQuestion) || string.IsNullOrEmpty(securityAnswer))
+            {
+                return false;
+            }
+
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+                string query = @"
+            SELECT security_question, security_answer
+            FROM users
+            WHERE user_id = @userId;
 
     }
 }

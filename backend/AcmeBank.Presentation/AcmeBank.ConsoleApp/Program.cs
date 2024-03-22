@@ -38,7 +38,7 @@ namespace AcmeBank.ConsoleApp
                     ==========================================================
                                     Teller - Main menu
                     Please choose one of the following options:
-                            1. Customer accounts.
+                            1. Customer Profile.
                             2. Sign out/Exit the system.
                     ==========================================================
                 """);

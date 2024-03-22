@@ -65,6 +65,7 @@ CREATE TABLE transactions (
     personal_account_id INT,
     isa_account_id INT,
     business_account_id INT,
+    recipient_account_number VARCHAR(20) NOT NULL,
     transaction_date TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
     amount DECIMAL(15, 2) NOT NULL,
     transaction_type VARCHAR(50) NOT NULL,

@@ -20,33 +20,44 @@ public class UserLoginHandler
     // This method handles the login process for a user.
     public User HandleLogin()
     {
-        // Prompting the user to enter their passport number.
-        // Reading the user's input, trimming any leading or trailing white spaces, and handling potential null values.
         Console.WriteLine("Please enter the customer's Passport Number:");
         string passportNumber = Console.ReadLine()?.Trim() ?? "";
 
-        // Prompting the user to enter the first line of their address.
-        // Reading the user's input, trimming any leading or trailing white spaces, and handling potential null values.
         Console.WriteLine("Please enter the first line of the customer's address:");
         string addressLine1 = Console.ReadLine()?.Trim() ?? "";
 
-        // A list to store the users that match the entered passport number.
         List<User> users;
-        // If the entered passport number is verified by the _userAppService and there is at least one matching user,
         if (_userAppService.VerifyPassportNumber(passportNumber, out users) && users.Count > 0)
         {
-            // The first matching user is selected - will only be one matching user as passport numbers are unique.
             User user = users[0];
-            // If the entered address matches the selected user's address,
             if (_userAppService.VerifyAddress(user, addressLine1))
             {
-                // Inform the user of successful login and return the verified user.
-                Console.WriteLine("Login successful.");
-                return user;
+                // Fetch security question for the verified user
+                string securityQuestion = _userAppService.GetSecurityQuestion(user, user.UserId);
+                if (!string.IsNullOrEmpty(securityQuestion))
+                {
+                    // Ask the user to answer the security question
+                    Console.WriteLine($"Please answer the security question: {securityQuestion}");
+                    string securityAnswer = Console.ReadLine()?.Trim() ?? "";
+
+                    // Verify the security question's answer
+                    if (_userAppService.VerifySecurityQuestion(user, user.UserId, securityQuestion, securityAnswer))
+                    {
+                        Console.WriteLine("Security question answered correctly. Login successful.");
+                        return user;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Incorrect answer to security question.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No security question found for user.");
+                }
             }
         }
 
-        // If the login attempt was unsuccessful, inform the user and return null.
         Console.WriteLine("Login failed.");
         return null;
     }

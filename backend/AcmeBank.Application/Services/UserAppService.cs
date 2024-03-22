@@ -42,13 +42,15 @@ namespace AcmeBank.Application.Services
                         while (reader.Read())
                         {
                             users.Add(new User(
-                                reader["user_id"].ToString(),
+                                reader.GetInt32(reader.GetOrdinal("user_id")),
                                 reader["name"].ToString(),
                                 reader["email"].ToString(),
                                 reader["phone"].ToString(),
                                 reader["passport_number"].ToString(),
                                 reader["address_line1"].ToString(),
-                                reader.IsDBNull(reader.GetOrdinal("address_line2")) ? null : reader["address_line2"].ToString(),
+                                reader.IsDBNull(reader.GetOrdinal("address_line2"))
+                                    ? null
+                                    : reader["address_line2"].ToString(),
                                 reader["city"].ToString(),
                                 reader["postcode"].ToString(),
                                 reader["country"].ToString()
@@ -65,7 +67,8 @@ namespace AcmeBank.Application.Services
         public bool VerifyAddress(User user, string addressLine1)
         {
             // Check AddressLine1
-            bool isAddressLine1Valid = string.Equals(user.AddressLine1, addressLine1, StringComparison.OrdinalIgnoreCase);
+            bool isAddressLine1Valid =
+                string.Equals(user.AddressLine1, addressLine1, StringComparison.OrdinalIgnoreCase);
 
             // Remove other address lines for now to simplify the logic
             // (, string addressLine2, string city, string postcode, string country)
@@ -82,39 +85,36 @@ namespace AcmeBank.Application.Services
             // && isAddressLine2Valid && isCityValid && isPostcodeValid && isCountryValid;
             return isAddressLine1Valid;
         }
-        
-        public string GetSecurityQuestion(User user)
-        {
-            if (user == null)
-            {
-                return null;
-            }
 
+        public string GetSecurityQuestion(User user, int userId)
+        {
             using (var conn = new NpgsqlConnection(_connectionString))
             {
                 conn.Open();
                 string query = @"
-            SELECT security_question
-            FROM users
-            WHERE user_id = @userId;
-
+            SELECT question
+            FROM SecurityQA
+            WHERE user_id = @UserId;
         ";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@userId", user.UserId);
+                    cmd.Parameters.AddWithValue("@UserId", user.UserId);
 
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            return reader["security_question"].ToString();
+                            return reader["question"].ToString();
                         }
                     }
                 }
             }
-        
-        public bool VerifySecurityQuestion(User user, string securityQuestion, string securityAnswer)
+
+            return null; // Return null if no security question is found
+        }
+
+        public bool VerifySecurityQuestion(User user, int userId, string securityQuestion, string securityAnswer)
         {
             if (user == null || string.IsNullOrEmpty(securityQuestion) || string.IsNullOrEmpty(securityAnswer))
             {
@@ -125,9 +125,29 @@ namespace AcmeBank.Application.Services
             {
                 conn.Open();
                 string query = @"
-            SELECT security_question, security_answer
-            FROM users
-            WHERE user_id = @userId;
+SELECT answer AS security_answer
+FROM SecurityQA
+WHERE user_id = @UserId AND question = @SecurityQuestion;
+";
 
+                using (var cmd = new NpgsqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.Parameters.AddWithValue("@SecurityQuestion", securityQuestion);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            var storedAnswer = reader["security_answer"].ToString();
+                            // Compare the provided answer with the stored answer
+                            return securityAnswer.Equals(storedAnswer, StringComparison.Ordinal);
+                        }
+                    }
+                }
+            }
+
+            return false; // Return false if the answer doesn't match or no question/answer pair is found
+        }
     }
 }

@@ -6,6 +6,7 @@ namespace AcmeBank.Domain.Models
 {
     public class User
     {
+        public int UserId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
@@ -16,10 +17,11 @@ namespace AcmeBank.Domain.Models
         public string Postcode { get; set; }
         public string Country { get; set; }
 
-        public User(string name, string email, string phone, string passportNumber, 
+        public User(int userid, string name, string email, string phone, string passportNumber, 
                         string addressLine1, string addressLine2, string city, 
                         string postcode, string country)
         {
+            UserId = userid;
             Name = name;
             Email = email;
             Phone = phone;

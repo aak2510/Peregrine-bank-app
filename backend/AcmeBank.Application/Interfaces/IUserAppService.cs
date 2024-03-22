@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AcmeBank.Application.Interfaces
 {
-    public interface IAccountAppService
+    public interface IUserAppService
     {
         bool VerifyPassportNumber(string passportNumber, out List<User> users);
 

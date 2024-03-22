@@ -6,11 +6,11 @@ using Npgsql;
 
 namespace AcmeBank.Application.Services
 {
-    public class AccountAppService : IAccountAppService
+    public class UserAppService : IUserAppService
     {
         private readonly string _connectionString;
 
-        public AccountAppService()
+        public UserAppService()
         {
             _connectionString = "Server=localhost;Port=5432;User Id=postgres;Password=9596;Database=acmebankdb";
         }

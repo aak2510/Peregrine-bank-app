@@ -137,8 +137,6 @@ class Program
             Console.WriteLine($"User account doesn't exist. You have {3 - attempts} login attempts left.  Please ensure you enter the details accurately");
         }
         while (attempts < 3);
-    
-        
 
         Console.Write("Please enter customers First Line of customer address: ");
         string firstLineAddress = Console.ReadLine()?.ToLower().Trim() ?? "";
@@ -154,6 +152,8 @@ class Program
 
         Console.Write("Please enter customers country of residence: ");
         string country = Console.ReadLine()?.ToLower().Trim() ?? "";
+        
+        
 
         if (userVerification.VerifyAddress(users[0], firstLineAddress, secondLineAddress, city, postcode, country)){
             TellerMenu tm = new TellerMenu();

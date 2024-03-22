@@ -12,52 +12,52 @@ namespace AcmeBank.Application.Services
 
         public AccountAppService()
         {
-            _connectionString = "Server=localhost;Port=5432;User Id=postgres;Password=9596;Database=acmebanktestdb";
+            _connectionString = "Server=localhost;Port=5432;User Id=postgres;Password=9596;Database=acmebankdb";
         }
 
-        public List<User> VerifyPassportNumber(string passportNumber)
+        public bool VerifyPassportNumber(string passportNumber, out List<User> users)
         {
-            var users = new List<User>();
+            users = new List<User>();
 
-            if (!string.IsNullOrEmpty(passportNumber))
+            if (string.IsNullOrEmpty(passportNumber))
             {
-                using (var conn = new NpgsqlConnection(_connectionString))
+                return false; // Invalid passport number
+            }
+
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+                string query = @"
+            SELECT user_id, name, email, phone, passport_number, address_line1, address_line2, city, postcode, country
+            FROM users
+            WHERE passport_number = @passportNumber;
+        ";
+
+                using (var cmd = new NpgsqlCommand(query, conn))
                 {
-                    conn.Open();
-                    string query = @"
-                SELECT id, name, email, phone, passport_number, address_line1, address_line2, city, postcode, country
-                FROM users
-                WHERE passport_number = @passportNumber;
-            ";
+                    cmd.Parameters.AddWithValue("@passportNumber", passportNumber);
 
-                    using (var cmd = new NpgsqlCommand(query, conn))
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        cmd.Parameters.AddWithValue("@passportNumber", passportNumber);
-
-                        using (var reader = cmd.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
-                            {
-                                users.Add(new User(
-                                    reader["name"].ToString(),
-                                    reader["email"].ToString(),
-                                    reader["phone"].ToString(),
-                                    reader["passport_number"].ToString(),
-                                    reader["address_line1"].ToString(),
-                                    reader.IsDBNull(reader.GetOrdinal("address_line2"))
-                                        ? null
-                                        : reader["address_line2"].ToString(),
-                                    reader["city"].ToString(),
-                                    reader["postcode"].ToString(),
-                                    reader["country"].ToString()
-                                ));
-                            }
+                            users.Add(new User(
+                                reader["name"].ToString(),
+                                reader["email"].ToString(),
+                                reader["phone"].ToString(),
+                                reader["passport_number"].ToString(),
+                                reader["address_line1"].ToString(),
+                                reader.IsDBNull(reader.GetOrdinal("address_line2")) ? null : reader["address_line2"].ToString(),
+                                reader["city"].ToString(),
+                                reader["postcode"].ToString(),
+                                reader["country"].ToString()
+                            ));
                         }
                     }
                 }
             }
 
-            return users;
+            return users.Count > 0;
         }
 
 

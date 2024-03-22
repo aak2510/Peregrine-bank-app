@@ -24,14 +24,28 @@ public class TellerLoginHandler
         // A loop that continues until a successful login or maximum attempts reached.
         do
         {
+            
+            
             // Prompting the teller to enter their email.
             // Reading the teller's input, converting it to lower case, trimming any leading or trailing white spaces, and handling potential null values.
-            Console.Write("Please enter your email: ");
+            Console.WriteLine("""
+                                  ==========================================================
+                                                  Teller - Login
+                                        Please enter your credentials to log in
+                                           1. Please Enter your Email Address
+                                  ==========================================================
+                              """);
             string inputEmail = Console.ReadLine()?.ToLower().Trim() ?? "";
                 
             // Prompting the teller to enter their password.
             // Reading the teller's input, trimming any leading or trailing white spaces, and handling potential null values.
-            Console.Write("Please enter your password: ");
+            Console.WriteLine("""
+                                  ==========================================================
+                                                  Teller - Login
+                                        Please enter your credentials to log in
+                                           2. Please Enter your Password
+                                  ==========================================================
+                              """);
             string inputPassword = Console.ReadLine()?.Trim() ?? "";
 
             // If the entered email and password are verified by the _tellerAppService,

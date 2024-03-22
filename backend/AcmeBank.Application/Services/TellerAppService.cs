@@ -36,7 +36,7 @@ public class TellerAppService : ITellerAppService
             string query = @"
             SELECT teller_id, email, password
             FROM tellers
-            WHERE email = @email AND password = @password;
+            WHERE email = @email;
         ";
 
             // A new command is created with the SQL query and the database connection.

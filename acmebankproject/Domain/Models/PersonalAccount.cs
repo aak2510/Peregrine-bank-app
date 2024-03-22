@@ -140,7 +140,11 @@ class PersonalAccount
     public void WithdrawMoney()
     {
         // check current balance of account with db call
-        List<string> result = RunQuery(this._queries["GetAccountBalanceView"]);
+        Dictionary<string, string> parameters = new Dictionary<string, string>();
+        parameters.Add("userid", this._userId.ToString());
+        parameters.Add("accountid", this._accountId.ToString());
+        NpgsqlDataReader reader = RunQuery(this._queries["GetAccountBalanceView"], parameters);
+        List<string> result = ReturnBalanceQueryResultsAsString(reader);
         Console.WriteLine($"account has £{result[0]}");
         // how much to withdraw?
         decimal maxWithdrawal = this._userBalance + 1500.00m;
@@ -181,7 +185,7 @@ class PersonalAccount
         
     }
 
-    private List<string> RunQuery(string query)
+    private NpgsqlDataReader RunQuery(string query, Dictionary<string, string> parameters)
     {
         List<string> results = new List<string>();
         using (var conn = new NpgsqlConnection(this._connectionString))
@@ -189,24 +193,34 @@ class PersonalAccount
             conn.Open();
             using (var cmd = new NpgsqlCommand(query, conn))
             {
-                cmd.Parameters.AddWithValue("@userid", this._userId);
-                cmd.Parameters.AddWithValue("@accountid", this._accountId);
-                using (var reader = cmd.ExecuteReader())
+                //loop through parameters
+                foreach (KeyValuePair<string,string> param in parameters)
                 {
-                    while (reader.Read())
-                    {
-                        decimal readerDecimalParseValue;
-                        this._userBalance = Decimal.TryParse(reader["account_balance"].ToString(), out readerDecimalParseValue) ? readerDecimalParseValue : 0;
-                        
-                        results.Add(reader["account_balance"].ToString());
-                        if (reader["overdraft"] != null && reader["overdraft"].Equals(true))
-                        {
-                            this._hasOverdraft = true;
-                        }
-                        
-                    }
+                    cmd.Parameters.AddWithValue("@" + param.Key, int.Parse(param.Value) );
                 }
+                var reader = cmd.ExecuteReader();
+                //return reader to be processed by origin method
+                return reader;
+
+                
             }
+        }
+    }
+
+    private List<string> ReturnBalanceQueryResultsAsString(NpgsqlDataReader reader)
+    {
+        List<string> results = new List<string>();
+        while (reader.Read())
+        {
+            decimal readerDecimalParseValue;
+            this._userBalance = Decimal.TryParse(reader["account_balance"].ToString(), out readerDecimalParseValue) ? readerDecimalParseValue : 0;
+                        
+            results.Add(reader["account_balance"].ToString());
+            if (reader["overdraft"] != null && reader["overdraft"].Equals(true))
+            {
+                this._hasOverdraft = true;
+            }
+                        
         }
 
         return results;

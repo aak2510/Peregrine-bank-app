@@ -1,6 +1,4 @@
-﻿using AcmeBank.Application.Services;
-using AcmeBank.Application.Interfaces;
-using System;
+﻿using AcmeBank.Application.Interfaces;
 
 namespace AcmeBank.ConsoleApp;
 

@@ -4,6 +4,7 @@
 
 using Npgsql;
 using NpgsqlTypes;
+using AcmeBank.Domain.Models;
 
 class PersonalAccount
 {

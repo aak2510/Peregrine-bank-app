@@ -110,8 +110,8 @@ class Program
             // Starts the application.
             //RunProgram();
             System.Console.WriteLine("helloworld");
-            PersonalAccount acc = new PersonalAccount(1);
-            acc.OpenPersonalAccount();
+            PersonalAccount acc = new PersonalAccount(1,2);
+            acc.WithdrawMoney();
 
         }
     }

@@ -37,6 +37,7 @@ class PersonalAccount
         string connString = "Server=localhost;Port=5432;User Id=acme;Password=password123;Database=acme";
         this._connectionString = connString;
         this._userId = user_id;
+        this.setQueries();
     }
     public PersonalAccount(int user_id, int account_id)
     {
@@ -44,25 +45,38 @@ class PersonalAccount
         this._connectionString = connString;
         this._userId = user_id;
         this._accountId = account_id;
+        this.setQueries();
     }
     #endregion
 
     private void setQueries()
     {
-        string query1 = """
+        //Add withdrawal query
+        string query = """
                         START TRANSACTION;
                         UPDATE personal_accounts
                         SET account_balance = account_balance - 150
-                        WHERE user_id = 1 AND account_id = 2 AND account_balance > 150;
+                        WHERE user_id = 1 AND account_id = 2 AND account_balance > -1500;
                         IF (row_affected_by_update > 0) THEN 
                             INSERT INTO transactions (personal_account_id, amount, transaction_type)
                             VALUES (2, 150, 'withdrawal');
                         END IF;
-                        
                         COMMIT;
                         """;
-        string queryDescription1 = "withdrawal";
-        this._queries.Add(queryDescription1,query1);
+        string queryDescription = "DoWithdrawal";
+        this._queries.Add(queryDescription,query);
+        //Add GetAccountBalanceView
+        query = """
+                SELECT p.account_balance, p.overdraft, u.name
+                FROM personal_accounts p
+                INNER JOIN users u
+                ON p.user_id = u.user_id
+                WHERE u.user_id = @userid AND p.account_id = @accountid
+                ORDER BY p.user_id
+                LIMIT 1000;
+                """;
+        queryDescription = "GetAccountBalanceView";
+        this._queries.Add(queryDescription,query);
     }
     
     
@@ -126,22 +140,14 @@ class PersonalAccount
     public void WithdrawMoney()
     {
         // check current balance of account with db call
-        string query = """
-                        SELECT p.account_balance, p.overdraft, u.name
-                        FROM personal_accounts p
-                        INNER JOIN users u
-                        ON p.user_id = u.user_id
-                        WHERE u.user_id = @userid AND p.account_id = @accountid
-                        ORDER BY p.user_id
-                        LIMIT 1000;
-                        """;
-        List<string> result = RunQuery(query);
+        List<string> result = RunQuery(this._queries["GetAccountBalanceView"]);
         Console.WriteLine($"account has £{result[0]}");
         // how much to withdraw?
         decimal maxWithdrawal = this._userBalance + 1500.00m;
-        Console.WriteLine($"""
+        Console.Write($"""
                           How much does the customer wish to withdraw?
-                          Max is {maxWithdrawal}\n
+                          Max is {maxWithdrawal}
+                          Withdraw Amount: £
                           """);
         
         // Check again and withdraw
@@ -154,6 +160,11 @@ class PersonalAccount
                 parseSuccessful = Decimal.TryParse(input, out amountToWithdraw);
             } while (!parseSuccessful);
             //now withdraw 
+            if (parseSuccessful)
+            {
+                Console.WriteLine("Withdraw attempted");
+                
+            }
             
         }
         
